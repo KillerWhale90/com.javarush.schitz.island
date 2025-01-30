@@ -52,7 +52,6 @@ public abstract class Animal extends Creature {
     public Animal reproduce(Animal a) {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
         if(this.isAlive && a.isAlive && this.getClass().getName().equals(a.getClass().getName())){
-
         }
         return null;
     }

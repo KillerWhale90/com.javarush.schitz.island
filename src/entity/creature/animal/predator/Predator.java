@@ -13,7 +13,7 @@ public abstract class Predator extends Animal {
 
     @Override
     public void eat(Creature c) {
-        if (this.isAlive){
+        if (this.isAlive && c != null){
             if(c instanceof Herbivore){
                 for (Herbivore herbivore : possibleFood.keySet()) {
                     if(herbivore.getClass().getName().equals(c.getClass().getName()) &&
