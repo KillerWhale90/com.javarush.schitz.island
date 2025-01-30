@@ -1,6 +1,6 @@
 package entity;
 
-import entity.creature.Creature;
+
 import entity.creature.animal.Animal;
 import entity.creature.animal.herbivore.Herbivore;
 import entity.creature.animal.herbivore.Rabbit;
@@ -11,9 +11,11 @@ import util.Settings;
 import util.UtilMethods;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class Location extends Thread{
     List<Animal[]> animals = new ArrayList<>();
@@ -25,11 +27,16 @@ public class Location extends Thread{
 
     public Location() {
         this.wolves = new Wolf[Settings.MAX_COUNT_OF_WOLVES_TO_LOCATION];
-        animals.add(wolves);
         this.rabbits = new Rabbit[Settings.MAX_COUNT_OF_RABBITS_TO_LOCATION];
-        animals.add(rabbits);
-        this.plant = new Plant(UtilMethods.randomChoose(0,Plant.maxWeight));
+//
+//        this.wolves = new Wolf[1];
+//        this.rabbits = new Rabbit[4];
+
+        this.plant = new Plant(UtilMethods.randomChoose(0, Settings.MAX_COUNT_OF_PLANTS_TO_LOCATION));
+
         locationInitialisation();
+        animals.add(wolves);
+        animals.add(rabbits);
     }
 
     public void locationInitialisation () {
@@ -39,41 +46,114 @@ public class Location extends Thread{
         for (int i = 0; i < UtilMethods.randomChoose(0, rabbits.length); i++) {
             rabbits[i] = new Rabbit();
         }
+
+//        for (int i = 0; i < wolves.length; i++) {
+//            wolves[i] = new Wolf();
+//        }
+//        for (int i = 0; i < rabbits.length; i++) {
+//            rabbits[i] = new Rabbit();
+//        }
     }
 
     public void removeDeadAnimals () {
         for (Animal[] animal : animals) {
             for (int i = 0; i < animal.length; i++) {
-                if(!animal[i].isAlive){
+                if(animal[i] != null && !animal[i].isAlive){
                     animal[i] = null;
                 }
             }
         }
     }
 
-    @Override
-    public void run() {
-        removeDeadAnimals();
+    public void countOfAnimalsAndPlants () {
+        int tempCount;
 
         for (Animal[] animal : animals) {
-            for (int i = 0; i < animal.length; i++) {
-                int currentArrayForEat = UtilMethods.randomChoose(0,animals.size() - 1);
-                int currentAnimalForEat = UtilMethods.randomChoose(0,animals.get(currentArrayForEat).length - 1);
+            tempCount = getAnimals(animal);
+            System.out.print(animal.getClass().getSimpleName() + " = " + tempCount + " ");
+        }
+        System.out.println(plant.getClass().getSimpleName() + " = " + getPlants());
+    }
 
-                int currentArrayForReproduce = UtilMethods.randomChoose(0,animals.size() - 1);
-                int currentAnimalForReproduce = UtilMethods.randomChoose(0,animals.get(currentArrayForEat).length - 1);
+    public double getPlants() {
+        return plant.currentWeight;
+    }
 
-                if(animal[i] instanceof Predator){
-                    animal[i].eat(animals.get(currentArrayForEat)[currentAnimalForEat]);
-                }else if(animal[i] instanceof Herbivore){
-                    animal[i].eat(plant);
-                }
+    public int getAnimals(Animal[] a) {
+        int count = 0;
 
-                animal[i].move();
-                animal[i].reproduce(animals.get(currentArrayForReproduce)[currentAnimalForReproduce]);
-                animal[i].die();
+        for (Animal animal : a) {
+            if (animal != null) {
+                count++;
             }
         }
+
+        return count;
+    }
+
+    public void organizeArray (Animal[] a) {
+        int j = 0;
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] != null) {
+                if(i != j) {
+                    Animal temp = a[j];
+                    a[j] = a[i];
+                    a[i] = temp;
+                }
+                j++;
+            }
+        }
+    }
+
+    @Override
+    public void run() {
+        simulationDay();
+    }
+
+    public void simulationDay () {
+        removeDeadAnimals();
+
+        countOfAnimalsAndPlants();
+
+        for (Animal[] animal : animals) {
+            for (Animal value : animal) {
+
+                int currentArrayForEat = UtilMethods.randomChoose(0, animals.size() - 1);
+
+                AtomicInteger currentCountOfNotNullAnimals = new AtomicInteger();
+
+                Arrays.stream(animals.get(currentArrayForEat)).forEach(animal1 -> {
+                    if(animal1 != null){
+                        currentCountOfNotNullAnimals.getAndIncrement();
+                    }
+                });
+
+                organizeArray(animals.get(currentArrayForEat));
+
+//                int currentAnimalForEat = UtilMethods.randomChoose(0, animals.get(currentArrayForEat).length - 1);
+                int currentAnimalForEat = UtilMethods.randomChoose(0, currentCountOfNotNullAnimals.get() - 1);
+
+                int currentArrayForReproduce = UtilMethods.randomChoose(0, animals.size() - 1);
+                int currentAnimalForReproduce = UtilMethods.randomChoose(0, animals.get(currentArrayForReproduce).length - 1);
+
+                if (value != null) {
+                    if (value instanceof Predator) {
+                        value.eat(animals.get(currentArrayForEat)[currentAnimalForEat]);
+                    } else if (value instanceof Herbivore) {
+                        value.eat(plant);
+                    }
+
+                    value.move();
+                    value.reproduce(animals.get(currentArrayForReproduce)[currentAnimalForReproduce]);
+                    value.die();
+                    removeDeadAnimals();
+
+//                    System.out.print(value.currentWeight + " " + value.isAlive + " ");
+//                    System.out.println();
+                }
+            }
+        }
+        System.out.println("-".repeat(100));
         plant.growUp();
     }
 }

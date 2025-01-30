@@ -9,28 +9,32 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Predator extends Animal {
 
-    Map<Herbivore, Integer> possibleFood = new HashMap<>();
+    Map<String, Integer> possibleFood = new HashMap<>();
 
     @Override
-    public void eat(Creature c) {
-        if (this.isAlive && c != null){
-            if(c instanceof Herbivore){
-                for (Herbivore herbivore : possibleFood.keySet()) {
-                    if(herbivore.getClass().getName().equals(c.getClass().getName()) &&
-                            ThreadLocalRandom.current().nextInt(0,100) <= possibleFood.get(herbivore)){
-                        herbivore.die();
-                        if(herbivore.currentWeight >= this.needFeedToWellfed &&
+    public void eat(Animal animal) {
+        int random = ThreadLocalRandom.current().nextInt(0,100);
+
+        if (this.isAlive && animal != null){
+            if(animal instanceof Herbivore){
+                for (String herbivore : possibleFood.keySet()) {
+                    if(herbivore.equals(animal.getClass().getSimpleName()) &&
+                            random <= possibleFood.get(herbivore)){
+                        animal.die(animal);
+                        if(animal.currentWeight >= this.needFeedToWellfed &&
                                 this.currentWeight + this.needFeedToWellfed <= this.maxWeight){
                             this.currentWeight = this.currentWeight + this.needFeedToWellfed;
-                        } else if (herbivore.currentWeight < this.needFeedToWellfed &&
-                                this.currentWeight + herbivore.currentWeight <= this.maxWeight) {
-                            this.currentWeight = this.currentWeight + herbivore.currentWeight;
+                        } else if (animal.currentWeight < this.needFeedToWellfed &&
+                                this.currentWeight + animal.currentWeight <= this.maxWeight) {
+                            this.currentWeight = this.currentWeight + animal.currentWeight;
                         }
                     } else {
                         this.decreaseWeight();
                     }
                 }
             }
+        }else {
+            this.decreaseWeight();
         }
     }
 }

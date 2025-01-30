@@ -6,20 +6,21 @@ import entity.creature.plant.Plant;
 
 public abstract class Herbivore extends Animal {
     @Override
-    public void eat(Creature c) {
-        if(isAlive){
-            if(c instanceof Plant){
-                if(c.currentWeight >= this.needFeedToWellfed &&
-                        this.currentWeight + c.currentWeight <= this.maxWeight){
+    public void eat(Plant plant) {
+        if(this.isAlive){
+            if(plant != null){
+                if(plant.currentWeight >= this.needFeedToWellfed){
                     this.currentWeight = this.currentWeight + this.needFeedToWellfed;
-                    c.currentWeight = c.currentWeight - this.needFeedToWellfed;
-                } else if (c.currentWeight < this.needFeedToWellfed &&
-                        this.currentWeight + c.currentWeight <= this.maxWeight) {
-                    this.currentWeight = this.currentWeight + c.currentWeight;
-                    c.currentWeight = 0;
+                    plant.currentWeight = plant.currentWeight - this.needFeedToWellfed;
+                } else if (plant.currentWeight < this.needFeedToWellfed) {
+                    this.currentWeight = this.currentWeight + plant.currentWeight;
+                    plant.currentWeight = 0;
                 }
             }else {
                 this.decreaseWeight();
+            }
+            if(this.currentWeight > this.maxWeight){
+                this.currentWeight = this.maxWeight;
             }
         }
     }

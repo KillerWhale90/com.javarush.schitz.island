@@ -1,19 +1,12 @@
 package entity.creature.animal;
 
 import entity.creature.Creature;
+import entity.creature.plant.Plant;
 import util.Direction;
 import util.Settings;
 import util.UtilMethods;
 
 public abstract class Animal extends Creature {
-
-/*
-    public double currentWeight;
-    public double maxWeight;
-    public int MAX_COUNT_ON_LOCATION;
-    public int x;
-    public int y;
-*/
 
     public int maxSpeed;
 
@@ -21,11 +14,12 @@ public abstract class Animal extends Creature {
 
     public boolean isAlive = true;
 
-    public void eat(Creature c) {
-        // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
-        // КТО ИМЕННО ЭТОТ Creature БУДЕТ ВЛИЯТЬ НА ФОРМАТ ПОЕДАНИЯ
-        // КОГДА СТАНЕТ ПОНЯТНО КТО КОНКРЕТНО ЭТО Creature
-        // МЫ МОЖЕМ ОПРЕДЕЛИТЬ ВЕРОЯТНОСТЬ ЕГО ПОЕДАНИЯ И РЕАЛИЗОВАТЬ ЭТУ ЛОГИКУ
+    public void eat(Animal animal) {
+
+    }
+
+    public void eat(Plant plant) {
+
     }
 
     public void move() {
@@ -51,19 +45,25 @@ public abstract class Animal extends Creature {
 
     public Animal reproduce(Animal a) {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
-        if(this.isAlive && a.isAlive && this.getClass().getName().equals(a.getClass().getName())){
+        if(a != null){
+            if(this.isAlive && a.isAlive && this.getClass().getName().equals(a.getClass().getName())){
+            }
         }
+
         return null;
     }
 
     public void die() {
-        // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
-        if(currentWeight < maxWeight / 2){
+        if(currentWeight < (maxWeight / 2)){
             isAlive = false;
         }
     }
 
+    public void die(Animal animal){
+        isAlive = false;
+    }
+
     public void decreaseWeight() {
-        currentWeight = currentWeight - (currentWeight/20);
+        currentWeight = currentWeight - (currentWeight/10);
     }
 }
