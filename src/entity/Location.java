@@ -105,11 +105,6 @@ public class Location extends Thread{
         }
     }
 
-    @Override
-    public void run() {
-        simulationDay();
-    }
-
     public void simulationDay () {
         removeDeadAnimals();
 
@@ -136,6 +131,7 @@ public class Location extends Thread{
                 int currentArrayForReproduce = UtilMethods.randomChoose(0, animals.size() - 1);
                 int currentAnimalForReproduce = UtilMethods.randomChoose(0, animals.get(currentArrayForReproduce).length - 1);
 
+
                 if (value != null) {
                     if (value instanceof Predator) {
                         value.eat(animals.get(currentArrayForEat)[currentAnimalForEat]);
@@ -144,7 +140,7 @@ public class Location extends Thread{
                     }
 
                     value.move();
-                    value.reproduce(animals.get(currentArrayForReproduce)[currentAnimalForReproduce]);
+                    value.reproduce(animals.get(currentArrayForReproduce)[currentAnimalForReproduce], animals.get(currentArrayForReproduce));
                     value.die();
                     removeDeadAnimals();
 
@@ -155,5 +151,10 @@ public class Location extends Thread{
         }
         System.out.println("-".repeat(100));
         plant.growUp();
+    }
+
+    @Override
+    public void run() {
+        simulationDay();
     }
 }

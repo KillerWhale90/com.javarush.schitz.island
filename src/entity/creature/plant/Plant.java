@@ -11,7 +11,7 @@ public class Plant extends Creature {
 
     public void growUp(){
         if(currentWeight < maxWeight){
-            currentWeight = currentWeight + (currentWeight / 30);
+            currentWeight = currentWeight + (currentWeight / 20);
         }
         if(currentWeight > maxWeight){
             currentWeight = maxWeight;

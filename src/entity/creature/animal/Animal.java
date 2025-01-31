@@ -2,9 +2,12 @@ package entity.creature.animal;
 
 import entity.creature.Creature;
 import entity.creature.plant.Plant;
+import util.AnimalFactory;
 import util.Direction;
 import util.Settings;
 import util.UtilMethods;
+
+import java.lang.reflect.Constructor;
 
 public abstract class Animal extends Creature {
 
@@ -43,14 +46,21 @@ public abstract class Animal extends Creature {
         }
     }
 
-    public Animal reproduce(Animal a) {
+    public void reproduce(Animal a, Animal[] animals) {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
+        Animal newAnimal = null;
+
         if(a != null){
             if(this.isAlive && a.isAlive && this.getClass().getName().equals(a.getClass().getName())){
+                newAnimal = new AnimalFactory().createNewAnimal(a);
+                for (int i = 0; i < animals.length; i++) {
+                    if(animals[i] == null){
+                        animals[i] = newAnimal;
+                        break;
+                    }
+                }
             }
         }
-
-        return null;
     }
 
     public void die() {

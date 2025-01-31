@@ -1,6 +1,5 @@
 package entity.creature.animal.predator;
 
-import entity.creature.Creature;
 import entity.creature.animal.Animal;
 import entity.creature.animal.herbivore.Herbivore;
 import java.util.HashMap;
