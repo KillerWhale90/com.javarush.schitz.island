@@ -7,8 +7,6 @@ import util.Direction;
 import util.Settings;
 import util.UtilMethods;
 
-import java.lang.reflect.Constructor;
-
 public abstract class Animal extends Creature {
 
     public int maxSpeed;
@@ -48,7 +46,7 @@ public abstract class Animal extends Creature {
 
     public void reproduce(Animal a, Animal[] animals) {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
-        Animal newAnimal = null;
+        Animal newAnimal;
 
         if(a != null){
             if(this.isAlive && a.isAlive && this.getClass().getName().equals(a.getClass().getName())){
@@ -70,7 +68,7 @@ public abstract class Animal extends Creature {
     }
 
     public void die(Animal animal){
-        isAlive = false;
+        animal.isAlive = false;
     }
 
     public void decreaseWeight() {

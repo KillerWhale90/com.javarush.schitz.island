@@ -1,7 +1,5 @@
 package entity.creature.animal.predator;
 
-import entity.creature.animal.herbivore.Rabbit;
-
 public class Wolf extends Predator{
 
     public Wolf() {

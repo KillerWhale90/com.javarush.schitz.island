@@ -26,10 +26,10 @@ public class Island extends Thread{
             for (int i = 0; i < locations.length; i++) {
                 for (int j = 0; j < locations.length; j++) {
                     for (Animal[] animal : locations[i][j].animals) {
-                        for (int k = 0; k < animal.length; k++) {
-                            if(animal[k] != null){
-                                animal[k].y = i;
-                                animal[k].x = j;
+                        for (Animal value : animal) {
+                            if (value != null) {
+                                value.y = i;
+                                value.x = j;
                             }
                         }
                     }

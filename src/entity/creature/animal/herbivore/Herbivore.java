@@ -1,6 +1,5 @@
 package entity.creature.animal.herbivore;
 
-import entity.creature.Creature;
 import entity.creature.animal.Animal;
 import entity.creature.plant.Plant;
 

@@ -1,6 +1,5 @@
 package entity;
 
-
 import entity.creature.animal.Animal;
 import entity.creature.animal.herbivore.Herbivore;
 import entity.creature.animal.herbivore.Rabbit;
@@ -9,13 +8,10 @@ import entity.creature.animal.predator.Wolf;
 import entity.creature.plant.Plant;
 import util.Settings;
 import util.UtilMethods;
-
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
 
 public class Location extends Thread{
     List<Animal[]> animals = new ArrayList<>();
@@ -28,9 +24,6 @@ public class Location extends Thread{
     public Location() {
         this.wolves = new Wolf[Settings.MAX_COUNT_OF_WOLVES_TO_LOCATION];
         this.rabbits = new Rabbit[Settings.MAX_COUNT_OF_RABBITS_TO_LOCATION];
-//
-//        this.wolves = new Wolf[1];
-//        this.rabbits = new Rabbit[4];
 
         this.plant = new Plant(UtilMethods.randomChoose(0, Settings.MAX_COUNT_OF_PLANTS_TO_LOCATION));
 
@@ -46,13 +39,6 @@ public class Location extends Thread{
         for (int i = 0; i < UtilMethods.randomChoose(0, rabbits.length); i++) {
             rabbits[i] = new Rabbit();
         }
-
-//        for (int i = 0; i < wolves.length; i++) {
-//            wolves[i] = new Wolf();
-//        }
-//        for (int i = 0; i < rabbits.length; i++) {
-//            rabbits[i] = new Rabbit();
-//        }
     }
 
     public void removeDeadAnimals () {
@@ -125,12 +111,10 @@ public class Location extends Thread{
 
                 organizeArray(animals.get(currentArrayForEat));
 
-//                int currentAnimalForEat = UtilMethods.randomChoose(0, animals.get(currentArrayForEat).length - 1);
                 int currentAnimalForEat = UtilMethods.randomChoose(0, currentCountOfNotNullAnimals.get() - 1);
 
                 int currentArrayForReproduce = UtilMethods.randomChoose(0, animals.size() - 1);
                 int currentAnimalForReproduce = UtilMethods.randomChoose(0, animals.get(currentArrayForReproduce).length - 1);
-
 
                 if (value != null) {
                     if (value instanceof Predator) {
@@ -143,9 +127,6 @@ public class Location extends Thread{
                     value.reproduce(animals.get(currentArrayForReproduce)[currentAnimalForReproduce], animals.get(currentArrayForReproduce));
                     value.die();
                     removeDeadAnimals();
-
-//                    System.out.print(value.currentWeight + " " + value.isAlive + " ");
-//                    System.out.println();
                 }
             }
         }
