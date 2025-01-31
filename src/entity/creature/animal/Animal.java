@@ -7,6 +7,8 @@ import util.Direction;
 import util.Settings;
 import util.UtilMethods;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public abstract class Animal extends Creature {
 
     public int maxSpeed;
@@ -48,8 +50,10 @@ public abstract class Animal extends Creature {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
         Animal newAnimal;
 
+        int random = ThreadLocalRandom.current().nextInt(0,100);
+
         if(a != null){
-            if(this.isAlive && a.isAlive && this.getClass().getName().equals(a.getClass().getName())){
+            if(this.isAlive && a.isAlive && this.getClass().getName().equals(a.getClass().getName()) && random <= 30){
                 newAnimal = new AnimalFactory().createNewAnimal(a);
                 for (int i = 0; i < animals.length; i++) {
                     if(animals[i] == null){
