@@ -32,6 +32,8 @@ public abstract class Predator extends Animal {
                         this.currentWeight = this.maxWeight;
                     }
                 }
+            }else {
+                this.decreaseWeight();
             }
         }else {
             this.decreaseWeight();

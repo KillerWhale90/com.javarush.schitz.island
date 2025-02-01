@@ -7,6 +7,7 @@ public class Wolf extends Predator{
         this.currentWeight = maxWeight;
         this.needFeedToWellfed = 8;
         this.isAlive = true;
+        this.maxSpeed = 3;
         initPossibleFood();
     }
 

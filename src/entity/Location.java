@@ -14,31 +14,37 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Location extends Thread{
-    List<Animal[]> animals = new ArrayList<>();
+    public List<Animal[]> animals = new ArrayList<>();
 
     Plant plant;
 
     Wolf[] wolves;
-    Rabbit[] rabbits;
+//    Rabbit[] rabbits;
 
     public Location() {
-        this.wolves = new Wolf[Settings.MAX_COUNT_OF_WOLVES_TO_LOCATION];
-        this.rabbits = new Rabbit[Settings.MAX_COUNT_OF_RABBITS_TO_LOCATION];
+//        this.wolves = new Wolf[Settings.MAX_COUNT_OF_WOLVES_TO_LOCATION];
+//        this.rabbits = new Rabbit[Settings.MAX_COUNT_OF_RABBITS_TO_LOCATION];
+
+        this.wolves = new Wolf[1];
 
         this.plant = new Plant(UtilMethods.randomChoose(0, Settings.MAX_COUNT_OF_PLANTS_TO_LOCATION));
 
         locationInitialisation();
         animals.add(wolves);
-        animals.add(rabbits);
+//        animals.add(rabbits);
     }
 
     public void locationInitialisation () {
-        for (int i = 0; i < UtilMethods.randomChoose(0, wolves.length); i++) {
-            wolves[i] = new Wolf();
-        }
-        for (int i = 0; i < UtilMethods.randomChoose(0, rabbits.length); i++) {
-            rabbits[i] = new Rabbit();
-        }
+//        for (int i = 0; i < UtilMethods.randomChoose(0, wolves.length); i++) {
+//            wolves[i] = new Wolf();
+//        }
+//        for (int i = 0; i < UtilMethods.randomChoose(0, rabbits.length); i++) {
+//            rabbits[i] = new Rabbit();
+//        }
+
+//        for (int i = 0; i < wolves.length; i++) {
+//            wolves[i] = new Wolf();
+//        }
     }
 
     public void removeDeadAnimals () {
@@ -94,7 +100,7 @@ public class Location extends Thread{
     public void simulationDay () {
         removeDeadAnimals();
 
-        countOfAnimalsAndPlants();
+//        countOfAnimalsAndPlants();
 
         for (Animal[] animal : animals) {
             for (Animal value : animal) {
@@ -123,14 +129,17 @@ public class Location extends Thread{
                         value.eat(plant);
                     }
 
-                    value.move();
+                    value.move(Island.locations);
                     value.reproduce(animals.get(currentArrayForReproduce)[currentAnimalForReproduce], animals.get(currentArrayForReproduce));
                     value.die();
+
+                    System.out.println(value.currentWeight);
+
                     removeDeadAnimals();
                 }
             }
         }
-        System.out.println("-".repeat(100));
+//        System.out.println("-".repeat(100));
         plant.growUp();
     }
 

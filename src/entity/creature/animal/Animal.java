@@ -1,5 +1,6 @@
 package entity.creature.animal;
 
+import entity.Location;
 import entity.creature.Creature;
 import entity.creature.plant.Plant;
 import util.AnimalFactory;
@@ -25,25 +26,53 @@ public abstract class Animal extends Creature {
 
     }
 
-    public void move() {
+    public void move(Location[][] locations) {
         // ДЕФОЛТНАЯ РЕАЛИЗАЦИЯ
         int speed = UtilMethods.randomChoose(0, maxSpeed);
+
         Direction direction = UtilMethods.randomDirection();
 
-        if(isAlive){
-            if(direction == Direction.UP && y != 0 && y - speed >= 0){
-                y = y - speed;
+        System.out.println("speed: " + speed + " " + "direction: " + direction);
+        System.out.println("x: " + this.x + " " + "y: " + this.y);
+        System.out.println(this);
+
+        int tempX = this.x;
+        int tempY = this.y;
+
+        if(this.isAlive){
+            if(direction == Direction.UP && this.y != 0 && this.y - speed >= 0){
+                this.y = this.y - speed;
             }
-            if(direction == Direction.DOWN && y != Settings.ROWS_COUNT - 1 && y + speed <= Settings.ROWS_COUNT - 1){
-                y = y + speed;
+            if(direction == Direction.DOWN && this.y != Settings.ROWS_COUNT - 1 && this.y + speed <= Settings.ROWS_COUNT - 1){
+                this.y = this.y + speed;
             }
-            if(direction == Direction.LEFT && x != 0 && x - speed >= 0){
-                x = x - speed;
+            if(direction == Direction.LEFT && this.x != 0 && this.x - speed >= 0){
+                this.x = this.x - speed;
             }
-            if(direction == Direction.RIGHT && x != Settings.COLUMNS_COUNT - 1 && x + speed <= Settings.COLUMNS_COUNT - 1){
-                x = x + speed;
+            if(direction == Direction.RIGHT && this.x != Settings.COLUMNS_COUNT - 1 && this.x + speed <= Settings.COLUMNS_COUNT - 1){
+                this.x = this.x + speed;
             }
         }
+
+        for (int i = 0; i < locations.length; i++) {
+            for (int j = 0; j < locations.length; j++) {
+                if(this.y == i && this.x == j){
+                    for (Animal[] animals : locations[i][j].animals) {
+                        for (Animal value : animals) {
+                            if (value != null && this.getClass().getName().equals(value.getClass().getName())) {
+                                for (int k = 0; k < animals.length; k++) {
+                                    if(animals[k] == null){
+                                        animals[k] = this;
+                                        locations[tempY][tempX] = null;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     public void reproduce(Animal a, Animal[] animals) {
