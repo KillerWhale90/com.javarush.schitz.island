@@ -1,12 +1,15 @@
 package entity;
 
 import entity.creature.animal.Animal;
-import entity.creature.animal.predator.Wolf;
 import util.Settings;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Island extends Thread{
 
     public static Location[][] locations = new Location[Settings.ROWS_COUNT][Settings.COLUMNS_COUNT];
+    Map<String, Integer> generalCountOfAnimals = new HashMap<>();
 
     public Island() {
         initLocations();
@@ -19,8 +22,6 @@ public class Island extends Thread{
                 locations[i][j] = new Location();
             }
         }
-
-        locations[0][0].animals.getFirst()[0] = new Wolf();
     }
 
     public void initCoordinate () {
@@ -39,39 +40,57 @@ public class Island extends Thread{
     }
 
     public void countOfAnimalsAndPlants () {
-        int tempCountOfAnimals = 0;
-        double tempCountOfPlants = 0;
+        int generalCountOfWolf = 0;
+        int generalCountOfRabbit = 0;
 
-        String kindOfAnimals = "";
+        double generalCountOfPlants = 0;
+
         String plants = "Plants = ";
 
         for (int i = 0; i < locations.length; i++) {
             for (int j = 0; j < locations.length; j++) {
-                for (Animal[] animal : locations[i][j].animals) {
-                    tempCountOfAnimals = tempCountOfAnimals + locations[i][j].getAnimals(animal);
-                    kindOfAnimals = animal.getClass().getSimpleName();
+                for (String key : locations[i][j].countOfAnimals.keySet()) {
+                    if(key.equals(Settings.WOLF)){
+                        generalCountOfWolf = generalCountOfWolf + locations[i][j].countOfAnimals.get(key);
+                    } else if (key.equals(Settings.RABBIT)) {
+                        generalCountOfRabbit = generalCountOfRabbit + locations[i][j].countOfAnimals.get(key);
+                    }
                 }
-                tempCountOfPlants = tempCountOfPlants + locations[i][j].getPlants();
+                generalCountOfPlants = generalCountOfPlants + locations[i][j].getPlants();
             }
         }
 
-        System.out.print(kindOfAnimals + " = " + tempCountOfAnimals + " ");
-        System.out.println(plants + tempCountOfPlants);
+        for (int i = 0; i < locations.length; i++) {
+            for (int j = 0; j < locations.length; j++) {
+                for (String key : locations[i][j].countOfAnimals.keySet()) {
+                    if(key.equals(Settings.WOLF)){
+                        generalCountOfAnimals.put(key, generalCountOfWolf);
+                    } else if (key.equals(Settings.RABBIT)) {
+                        generalCountOfAnimals.put(key, generalCountOfRabbit);
+                    }
+                }
+            }
+        }
+        System.out.println(generalCountOfAnimals);
+
+        System.out.println(plants + generalCountOfPlants);
     }
+
+
 
     @Override
     public void run() {
         while (Settings.SIMULATION_DAYS > 0){
             System.out.println("Simulation day's rest: " + Settings.SIMULATION_DAYS);
-            countOfAnimalsAndPlants();
             for (int i = 0; i < locations.length; i++) {
                 for (int j = 0; j < locations.length; j++) {
                     locations[i][j].simulationDay();
                 }
             }
+            countOfAnimalsAndPlants();
             Settings.SIMULATION_DAYS--;
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

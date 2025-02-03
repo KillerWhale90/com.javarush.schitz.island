@@ -14,6 +14,8 @@ public abstract class Herbivore extends Animal {
                 } else if (plant.currentWeight < this.needFeedToWellfed) {
                     this.currentWeight = this.currentWeight + plant.currentWeight;
                     plant.currentWeight = 0;
+                }else {
+                    this.decreaseWeight();
                 }
             }else {
                 this.decreaseWeight();

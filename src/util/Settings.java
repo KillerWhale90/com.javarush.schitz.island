@@ -10,4 +10,8 @@ public class Settings {
     public final static int MAX_COUNT_OF_PLANTS_TO_LOCATION = 800;
     public final static int MAX_COUNT_OF_WOLVES_TO_LOCATION = 30;
     public final static int MAX_COUNT_OF_RABBITS_TO_LOCATION = 150;
+
+    //NAME'S OF ANIMAL
+    public static String WOLF = "Wolf";
+    public static String RABBIT = "Rabbit";
 }

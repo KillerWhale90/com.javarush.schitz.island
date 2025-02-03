@@ -8,43 +8,37 @@ import entity.creature.animal.predator.Wolf;
 import entity.creature.plant.Plant;
 import util.Settings;
 import util.UtilMethods;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Location extends Thread{
     public List<Animal[]> animals = new ArrayList<>();
+    Map<String, Integer> countOfAnimals = new HashMap<>();
 
     Plant plant;
 
     Wolf[] wolves;
-//    Rabbit[] rabbits;
+    Rabbit[] rabbits;
 
     public Location() {
-//        this.wolves = new Wolf[Settings.MAX_COUNT_OF_WOLVES_TO_LOCATION];
-//        this.rabbits = new Rabbit[Settings.MAX_COUNT_OF_RABBITS_TO_LOCATION];
-
-        this.wolves = new Wolf[1];
+        this.wolves = new Wolf[Settings.MAX_COUNT_OF_WOLVES_TO_LOCATION];
+        this.rabbits = new Rabbit[Settings.MAX_COUNT_OF_RABBITS_TO_LOCATION];
 
         this.plant = new Plant(UtilMethods.randomChoose(0, Settings.MAX_COUNT_OF_PLANTS_TO_LOCATION));
 
         locationInitialisation();
         animals.add(wolves);
-//        animals.add(rabbits);
+        animals.add(rabbits);
     }
 
     public void locationInitialisation () {
-//        for (int i = 0; i < UtilMethods.randomChoose(0, wolves.length); i++) {
-//            wolves[i] = new Wolf();
-//        }
-//        for (int i = 0; i < UtilMethods.randomChoose(0, rabbits.length); i++) {
-//            rabbits[i] = new Rabbit();
-//        }
-
-//        for (int i = 0; i < wolves.length; i++) {
-//            wolves[i] = new Wolf();
-//        }
+        for (int i = 0; i < UtilMethods.randomChoose(2, wolves.length); i++) {
+            wolves[i] = new Wolf();
+        }
+        for (int i = 0; i < UtilMethods.randomChoose(2, rabbits.length); i++) {
+            rabbits[i] = new Rabbit();
+        }
     }
 
     public void removeDeadAnimals () {
@@ -58,10 +52,10 @@ public class Location extends Thread{
     }
 
     public void countOfAnimalsAndPlants () {
-        int tempCount;
+        int tempCount = 0;
 
         for (Animal[] animal : animals) {
-            tempCount = getAnimals(animal);
+            tempCount = tempCount + getAnimals(animal);
             System.out.print(animal.getClass().getSimpleName() + " = " + tempCount + " ");
         }
         System.out.println(plant.getClass().getSimpleName() + " = " + getPlants());
@@ -79,8 +73,26 @@ public class Location extends Thread{
                 count++;
             }
         }
-
         return count;
+    }
+
+    public void info () {
+        String kindOfAnimal = "";
+
+        for (Animal[] a : animals) {
+            int count = 0;
+            if(a.getClass().getSimpleName().equals("Wolf[]")){
+                kindOfAnimal = "Wolf";
+            } else if (a.getClass().getSimpleName().equals("Rabbit[]")) {
+                kindOfAnimal = "Rabbit";
+            }
+            for (Animal animal : a) {
+                if(animal != null){
+                    count++;
+                }
+            }
+            countOfAnimals.put(kindOfAnimal, count);
+        }
     }
 
     public void organizeArray (Animal[] a) {
@@ -97,32 +109,45 @@ public class Location extends Thread{
         }
     }
 
+    public int randomArrayOfAnimals () {
+        return UtilMethods.randomChoose(0, animals.size() - 1);
+    }
+
     public void simulationDay () {
         removeDeadAnimals();
-
-//        countOfAnimalsAndPlants();
 
         for (Animal[] animal : animals) {
             for (Animal value : animal) {
 
-                int currentArrayForEat = UtilMethods.randomChoose(0, animals.size() - 1);
+                if(value != null){
+                    int currentArrayForEat = randomArrayOfAnimals();
 
-                AtomicInteger currentCountOfNotNullAnimals = new AtomicInteger();
+                    AtomicInteger currentCountOfNotNullAnimalsForEat = new AtomicInteger();
 
-                Arrays.stream(animals.get(currentArrayForEat)).forEach(animal1 -> {
-                    if(animal1 != null){
-                        currentCountOfNotNullAnimals.getAndIncrement();
-                    }
-                });
+                    Arrays.stream(animals.get(currentArrayForEat)).forEach(animal1 -> {
+                        if(animal1 != null){
+                            currentCountOfNotNullAnimalsForEat.getAndIncrement();
+                        }
+                    });
 
-                organizeArray(animals.get(currentArrayForEat));
+                    organizeArray(animals.get(currentArrayForEat));
 
-                int currentAnimalForEat = UtilMethods.randomChoose(0, currentCountOfNotNullAnimals.get() - 1);
+                    int currentAnimalForEat = UtilMethods.randomChoose(0, currentCountOfNotNullAnimalsForEat.get() - 1);
 
-                int currentArrayForReproduce = UtilMethods.randomChoose(0, animals.size() - 1);
-                int currentAnimalForReproduce = UtilMethods.randomChoose(0, animals.get(currentArrayForReproduce).length - 1);
+                    int currentArrayForReproduce = randomArrayOfAnimals();
 
-                if (value != null) {
+                    AtomicInteger currentCountOfNotNullAnimalsForReproduce = new AtomicInteger();
+
+                    Arrays.stream(animals.get(currentArrayForReproduce)).forEach(animal1 -> {
+                        if(animal1 != null){
+                            currentCountOfNotNullAnimalsForReproduce.getAndIncrement();
+                        }
+                    });
+
+                    organizeArray(animals.get(currentArrayForReproduce));
+
+                    int currentAnimalForReproduce = UtilMethods.randomChoose(0, currentCountOfNotNullAnimalsForReproduce.get() - 1);
+
                     if (value instanceof Predator) {
                         value.eat(animals.get(currentArrayForEat)[currentAnimalForEat]);
                     } else if (value instanceof Herbivore) {
@@ -133,13 +158,15 @@ public class Location extends Thread{
                     value.reproduce(animals.get(currentArrayForReproduce)[currentAnimalForReproduce], animals.get(currentArrayForReproduce));
                     value.die();
 
-                    System.out.println(value.currentWeight);
+                    for (Animal[] animals1 : animals) {
+                        organizeArray(animals1);
+                    }
 
                     removeDeadAnimals();
                 }
+                info();
             }
         }
-//        System.out.println("-".repeat(100));
         plant.growUp();
     }
 

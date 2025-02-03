@@ -32,10 +32,6 @@ public abstract class Animal extends Creature {
 
         Direction direction = UtilMethods.randomDirection();
 
-        System.out.println("speed: " + speed + " " + "direction: " + direction);
-        System.out.println("x: " + this.x + " " + "y: " + this.y);
-        System.out.println(this);
-
         int tempX = this.x;
         int tempY = this.y;
 
@@ -54,17 +50,22 @@ public abstract class Animal extends Creature {
             }
         }
 
+        String className = this.getClass().getSimpleName() + "[]";
+
         for (int i = 0; i < locations.length; i++) {
             for (int j = 0; j < locations.length; j++) {
                 if(this.y == i && this.x == j){
                     for (Animal[] animals : locations[i][j].animals) {
-                        for (Animal value : animals) {
-                            if (value != null && this.getClass().getName().equals(value.getClass().getName())) {
-                                for (int k = 0; k < animals.length; k++) {
-                                    if(animals[k] == null){
-                                        animals[k] = this;
-                                        locations[tempY][tempX] = null;
+                        if(className.equals(animals.getClass().getSimpleName())){
+                            for (int k = 0; k < animals.length; k++) {
+                                if(animals[k] == null){
+                                    animals[k] = this;
+                                    for (Animal[] animals1 : locations[tempY][tempX].animals) {
+                                        if(className.equals(animals1.getClass().getSimpleName())){
+                                            animals1[0] = null;
+                                        }
                                     }
+                                    break;
                                 }
                             }
                         }
@@ -72,6 +73,7 @@ public abstract class Animal extends Creature {
                 }
             }
         }
+
 
     }
 
@@ -82,7 +84,7 @@ public abstract class Animal extends Creature {
         int random = ThreadLocalRandom.current().nextInt(0,100);
 
         if(a != null){
-            if(this.isAlive && a.isAlive && this.getClass().getName().equals(a.getClass().getName()) && random <= 30){
+            if(this.isAlive && a.isAlive && this.getClass().getName().equals(a.getClass().getName()) && random <= 10){
                 newAnimal = new AnimalFactory().createNewAnimal(a);
                 for (int i = 0; i < animals.length; i++) {
                     if(animals[i] == null){

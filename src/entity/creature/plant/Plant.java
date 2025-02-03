@@ -16,5 +16,8 @@ public class Plant extends Creature {
         if(currentWeight > maxWeight){
             currentWeight = maxWeight;
         }
+        if(currentWeight == 0){
+            currentWeight = 20;
+        }
     }
 }
