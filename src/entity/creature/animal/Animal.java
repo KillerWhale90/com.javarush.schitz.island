@@ -62,7 +62,12 @@ public abstract class Animal extends Creature {
                                     animals[k] = this;
                                     for (Animal[] animals1 : locations[tempY][tempX].animals) {
                                         if(className.equals(animals1.getClass().getSimpleName())){
-                                            animals1[0] = null;
+                                            for (int l = 0; l < animals1.length; l++) {
+                                                if(this.equals(animals1[l])){
+                                                    animals1[l] = null;
+                                                    break;
+                                                }
+                                            }
                                         }
                                     }
                                     break;
@@ -73,8 +78,6 @@ public abstract class Animal extends Creature {
                 }
             }
         }
-
-
     }
 
     public void reproduce(Animal a, Animal[] animals) {
