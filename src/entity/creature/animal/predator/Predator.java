@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Predator extends Animal {
 
-    Map<String, Integer> possibleFood = new HashMap<>();
+    public Map<String, Integer> possibleFood = new HashMap<>();
 
     @Override
     public void eat(Animal animal) {

@@ -3,11 +3,15 @@ package entity.creature.animal.herbivore;
 import entity.creature.animal.Animal;
 import entity.creature.plant.Plant;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public abstract class Herbivore extends Animal {
     @Override
     public void eat(Plant plant) {
+        int random = ThreadLocalRandom.current().nextInt(0,100);
+
         if(this.isAlive){
-            if(plant != null){
+            if(plant != null && random <= 30){
                 if(plant.currentWeight >= this.needFeedToWellfed){
                     this.currentWeight = this.currentWeight + this.needFeedToWellfed;
                     plant.currentWeight = plant.currentWeight - this.needFeedToWellfed;

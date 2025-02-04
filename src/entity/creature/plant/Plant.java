@@ -2,6 +2,8 @@ package entity.creature.plant;
 
 import entity.creature.Creature;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Plant extends Creature {
 
     public Plant(int currentWeight) {
@@ -10,6 +12,7 @@ public class Plant extends Creature {
     }
 
     public void growUp(){
+        int random = ThreadLocalRandom.current().nextInt(0,100);
         if(currentWeight < maxWeight){
             currentWeight = currentWeight + (currentWeight / 20);
         }
@@ -17,7 +20,7 @@ public class Plant extends Creature {
             currentWeight = maxWeight;
         }
         if(currentWeight == 0){
-            currentWeight = 20;
+            currentWeight = currentWeight + random;
         }
     }
 }

@@ -1,8 +1,8 @@
 package util;
 
 import entity.creature.animal.Animal;
-import entity.creature.animal.herbivore.Rabbit;
-import entity.creature.animal.predator.Wolf;
+import entity.creature.animal.herbivore.herbivores.Rabbit;
+import entity.creature.animal.predator.predators.Wolf;
 
 public class AnimalFactory {
 
