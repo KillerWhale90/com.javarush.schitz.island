@@ -75,6 +75,11 @@ public class Location extends Thread{
         animals.add(mice);
     }
 
+    @Override
+    public void run() {
+        simulationDay();
+    }
+
     public void locationInitialisation () {
         for (int i = 0; i < UtilMethods.randomChoose(2, wolves.length); i++) {
             wolves[i] = new Wolf();
@@ -243,10 +248,5 @@ public class Location extends Thread{
             }
         }
         plant.growUp();
-    }
-
-    @Override
-    public void run() {
-        simulationDay();
     }
 }

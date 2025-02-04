@@ -5,12 +5,16 @@ import util.Settings;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Island extends Thread{
 
     public static Location[][] locations = new Location[Settings.ROWS_COUNT][Settings.COLUMNS_COUNT];
 
     Map<String, Integer> generalCountOfAnimals = new HashMap<>();
+
+    ExecutorService executorService = Executors.newFixedThreadPool(Settings.ROWS_COUNT*Settings.COLUMNS_COUNT);
 
     public Island() {
         initLocations();
@@ -23,7 +27,8 @@ public class Island extends Thread{
             System.out.println("Simulation day's rest: " + Settings.SIMULATION_DAYS);
             for (int i = 0; i < locations.length; i++) {
                 for (int j = 0; j < locations.length; j++) {
-                    locations[i][j].simulationDay();
+//                    locations[i][j].simulationDay();
+                    executorService.execute(locations[i][j]);
                 }
             }
             countOfAnimalsAndPlants();
@@ -34,6 +39,7 @@ public class Island extends Thread{
                 throw new RuntimeException(e);
             }
         }
+        executorService.shutdown();
     }
 
     public void initLocations () {
