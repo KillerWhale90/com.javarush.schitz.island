@@ -27,7 +27,6 @@ public class Island extends Thread{
             System.out.println("Simulation day's rest: " + Settings.SIMULATION_DAYS);
             for (int i = 0; i < locations.length; i++) {
                 for (int j = 0; j < locations.length; j++) {
-//                    locations[i][j].simulationDay();
                     executorService.execute(locations[i][j]);
                 }
             }
