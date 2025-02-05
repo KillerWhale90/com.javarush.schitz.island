@@ -6,6 +6,7 @@ import util.Settings;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Duck extends Herbivore {
     public Map<String, Integer> possibleFood = new HashMap<>();
@@ -25,6 +26,20 @@ public class Duck extends Herbivore {
 
     @Override
     public void eat(Animal animal) {
+        int random = ThreadLocalRandom.current().nextInt(0,100);
 
+        if (animal instanceof Caterpillar && random <= possibleFood.get(Settings.CATERPILLAR)){
+            animal.die(animal);
+            if(animal.currentWeight >= this.needFeedToWellfed){
+                this.currentWeight = this.currentWeight + this.needFeedToWellfed;
+            } else if (animal.currentWeight < this.needFeedToWellfed) {
+                this.currentWeight = this.currentWeight + animal.currentWeight;
+            }
+        } else {
+            this.decreaseWeight();
+        }
+        if(this.currentWeight > this.maxWeight){
+            this.currentWeight = this.maxWeight;
+        }
     }
 }

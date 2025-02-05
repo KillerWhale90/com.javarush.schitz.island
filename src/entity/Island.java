@@ -26,7 +26,7 @@ public class Island extends Thread{
         while (Settings.SIMULATION_DAYS > 0){
             System.out.println("Simulation day's rest: " + Settings.SIMULATION_DAYS);
             for (int i = 0; i < locations.length; i++) {
-                for (int j = 0; j < locations.length; j++) {
+                for (int j = 0; j < locations[i].length; j++) {
                     executorService.execute(locations[i][j]);
                 }
             }
@@ -43,7 +43,7 @@ public class Island extends Thread{
 
     public void initLocations () {
         for (int i = 0; i < locations.length; i++) {
-            for (int j = 0; j < locations.length; j++) {
+            for (int j = 0; j < locations[i].length; j++) {
                 locations[i][j] = new Location();
             }
         }
@@ -51,7 +51,7 @@ public class Island extends Thread{
 
     public void initCoordinate () {
         for (int i = 0; i < locations.length; i++) {
-            for (int j = 0; j < locations.length; j++) {
+            for (int j = 0; j < locations[i].length; j++) {
                 for (Animal[] animal : locations[i][j].animals) {
                     for (Animal value : animal) {
                         if (value != null) {
@@ -87,7 +87,7 @@ public class Island extends Thread{
         String plants = "Plants = ";
 
         for (int i = 0; i < locations.length; i++) {
-            for (int j = 0; j < locations.length; j++) {
+            for (int j = 0; j < locations[i].length; j++) {
                 for (String key : locations[i][j].countOfAnimals.keySet()) {
                     if(key.equals(Settings.WOLF)){
                         generalCountOfWolf = generalCountOfWolf + locations[i][j].countOfAnimals.get(key);
@@ -126,7 +126,7 @@ public class Island extends Thread{
         }
 
         for (int i = 0; i < locations.length; i++) {
-            for (int j = 0; j < locations.length; j++) {
+            for (int j = 0; j < locations[i].length; j++) {
                 for (String key : locations[i][j].countOfAnimals.keySet()) {
                     if(key.equals(Settings.WOLF)){
                         generalCountOfAnimals.put(key, generalCountOfWolf);

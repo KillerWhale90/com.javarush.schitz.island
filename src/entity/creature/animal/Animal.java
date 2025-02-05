@@ -53,7 +53,7 @@ public abstract class Animal extends Creature {
         String className = this.getClass().getSimpleName() + "[]";
 
         for (int i = 0; i < locations.length; i++) {
-            for (int j = 0; j < locations.length; j++) {
+            for (int j = 0; j < locations[i].length; j++) {
                 if(this.y == i && this.x == j){
                     for (Animal[] animals : locations[i][j].animals) {
                         if(className.equals(animals.getClass().getSimpleName())){
