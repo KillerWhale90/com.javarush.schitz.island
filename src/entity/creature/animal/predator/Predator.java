@@ -20,10 +20,10 @@ public abstract class Predator extends Animal {
                     if(herbivore.equals(animal.getClass().getSimpleName()) &&
                             random <= possibleFood.get(herbivore)){
                         animal.die(animal);
-                        if(animal.currentWeight >= this.needFeedToWellfed){
+                        if(animal.getCurrentWeight() >= this.needFeedToWellfed){
                             this.currentWeight = this.currentWeight + this.needFeedToWellfed;
-                        } else if (animal.currentWeight < this.needFeedToWellfed) {
-                            this.currentWeight = this.currentWeight + animal.currentWeight;
+                        } else if (animal.getCurrentWeight() < this.needFeedToWellfed) {
+                            this.currentWeight = this.currentWeight + animal.getCurrentWeight();
                         }
                     } else {
                         this.decreaseWeight();

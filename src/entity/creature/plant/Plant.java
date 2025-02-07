@@ -23,4 +23,12 @@ public class Plant extends Creature {
             currentWeight = currentWeight + random;
         }
     }
+
+    public double getCurrentWeight () {
+        return this.currentWeight;
+    }
+
+    public void setCurrentWeight (double currentWeight) {
+        this.currentWeight = currentWeight;
+    }
 }

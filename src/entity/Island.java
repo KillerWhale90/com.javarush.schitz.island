@@ -55,8 +55,8 @@ public class Island extends Thread{
                 for (Animal[] animal : locations[i][j].animals) {
                     for (Animal value : animal) {
                         if (value != null) {
-                            value.y = i;
-                            value.x = j;
+                            value.setYcoordinate(i);
+                            value.setXcoordinate(j);
                         }
                     }
                 }

@@ -12,12 +12,12 @@ public abstract class Herbivore extends Animal {
 
         if(this.isAlive){
             if(plant != null && random <= 30){
-                if(plant.currentWeight >= this.needFeedToWellfed){
+                if(plant.getCurrentWeight() >= this.needFeedToWellfed){
                     this.currentWeight = this.currentWeight + this.needFeedToWellfed;
-                    plant.currentWeight = plant.currentWeight - this.needFeedToWellfed;
-                } else if (plant.currentWeight < this.needFeedToWellfed) {
-                    this.currentWeight = this.currentWeight + plant.currentWeight;
-                    plant.currentWeight = 0;
+                    plant.setCurrentWeight(plant.getCurrentWeight() - this.needFeedToWellfed);
+                } else if (plant.getCurrentWeight() < this.needFeedToWellfed) {
+                    this.currentWeight = this.currentWeight + plant.getCurrentWeight();
+                    plant.setCurrentWeight(0);
                 }else {
                     this.decreaseWeight();
                 }

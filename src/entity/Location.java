@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Location extends Thread{
     public List<Animal[]> animals = new ArrayList<>();
+
     Map<String, Integer> countOfAnimals = new HashMap<>();
 
     Plant plant;
@@ -132,7 +133,7 @@ public class Location extends Thread{
     public void removeDeadAnimals () {
         for (Animal[] animal : animals) {
             for (int i = 0; i < animal.length; i++) {
-                if(animal[i] != null && !animal[i].isAlive){
+                if(animal[i] != null && !animal[i].getIsAlive()){
                     animal[i] = null;
                 }
             }
@@ -140,7 +141,7 @@ public class Location extends Thread{
     }
 
     public double getPlants() {
-        return plant.currentWeight;
+        return plant.getCurrentWeight();
     }
 
     public void info () {

@@ -30,10 +30,10 @@ public class Duck extends Herbivore {
 
         if (animal instanceof Caterpillar && random <= possibleFood.get(Settings.CATERPILLAR)){
             animal.die(animal);
-            if(animal.currentWeight >= this.needFeedToWellfed){
+            if(animal.getCurrentWeight() >= this.needFeedToWellfed){
                 this.currentWeight = this.currentWeight + this.needFeedToWellfed;
-            } else if (animal.currentWeight < this.needFeedToWellfed) {
-                this.currentWeight = this.currentWeight + animal.currentWeight;
+            } else if (animal.getCurrentWeight() < this.needFeedToWellfed) {
+                this.currentWeight = this.currentWeight + animal.getCurrentWeight();
             }
         } else {
             this.decreaseWeight();

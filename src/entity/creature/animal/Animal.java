@@ -12,11 +12,19 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Animal extends Creature {
 
-    public int maxSpeed;
+    protected int maxSpeed;
 
-    public double needFeedToWellfed;
+    protected double needFeedToWellfed;
 
-    public boolean isAlive = true;
+    protected boolean isAlive = true;
+
+    public double getCurrentWeight () {
+        return this.currentWeight;
+    }
+
+    public boolean getIsAlive () {
+        return isAlive;
+    }
 
     public void eat(Animal animal) {
 
@@ -24,6 +32,22 @@ public abstract class Animal extends Creature {
 
     public void eat(Plant plant) {
 
+    }
+
+    public int getXcoordinate() {
+        return this.x;
+    }
+
+    public void setXcoordinate(int x) {
+        this.x = x;
+    }
+
+    public int getYcoordinate() {
+        return this.y;
+    }
+
+    public void setYcoordinate(int y) {
+        this.y = y;
     }
 
     public void move(Location[][] locations) {
